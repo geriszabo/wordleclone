@@ -9,21 +9,23 @@ export const AppContext = createContext();
 
 function App() {
   const [board, setBoard] = useState(boardDefault);
-  const [keyUp, setKeyUp] = useState("");
   const [currentAttempt, setCurrentAttempt] = useState({
     attempt: 0,
     letterPos: 0,
   });
-  const [wordset, setWordset] = useState(new Set())
-  const [disabledLetters, setDisabledLetters] = useState([])
-  const [gameOver, setGameOver] = useState({gameOver: false, guessedWord: false})
-
-  const correctWord = "RIGHT"
+  const [wordset, setWordset] = useState(new Set());
+  const [disabledLetters, setDisabledLetters] = useState([]);
+  const [gameOver, setGameOver] = useState({
+    gameOver: false,
+    guessedWord: false,
+  });
+  const [correctWord, setCorrectWord] = useState("");
 
   useEffect(() => {
-   generateWordset().then(words => {
-     setWordset(words.wordSet)
-   })
+    generateWordset().then((words) => {
+      setWordset(words.wordSet);
+      setCorrectWord(words.wordSolution.toUpperCase());
+    });
   }, []);
 
   const onSelectLetter = (keyVal) => {
@@ -48,26 +50,26 @@ function App() {
   };
   const onEnter = () => {
     if (currentAttempt.letterPos !== 5) return;
-    let currWord = ""
-    for(let i = 0; i < 5; i++) {
-      currWord += board[currentAttempt.attempt][i]
+    let currWord = "";
+    for (let i = 0; i < 5; i++) {
+      currWord += board[currentAttempt.attempt][i];
     }
-    if(wordset.has(currWord.toLowerCase())) {
-      setCurrentAttempt({attempt: currentAttempt.attempt+1, letterPos: 0})
-    } else{
-      alert("Word not found")
+    if (wordset.has(currWord.toLowerCase())) {
+      setCurrentAttempt({ attempt: currentAttempt.attempt + 1, letterPos: 0 });
+    } else {
+      alert("Word not found");
     }
-    if(currWord === correctWord) {
-      setGameOver({gameOver: true, guessedWord: true})
-      return
+    if (currWord === correctWord) {
+      setGameOver({ gameOver: true, guessedWord: true });
+      return;
     }
-    if(currentAttempt.attempt === 5) {
-      setGameOver({gameOver: true, guessedWord: false})
+    if (currentAttempt.attempt === 5) {
+      setGameOver({ gameOver: true, guessedWord: false });
     }
   };
 
   return (
-    <div className="App h-screen w-screen flex flex-col items-center justify-between">
+    <div className="App h-screen w-screen flex flex-col items-center justify-between relative">
       <AppContext.Provider
         value={{
           board,
@@ -81,7 +83,7 @@ function App() {
           setDisabledLetters,
           disabledLetters,
           gameOver,
-          setGameOver
+          setGameOver,
         }}
       >
         <Board></Board>
