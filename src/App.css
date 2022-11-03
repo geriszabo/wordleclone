@@ -57,3 +57,7 @@
 #error {
   background-color: #7b797e;
 }
+
+#disabled {
+  background-color: #3a393c;
+}

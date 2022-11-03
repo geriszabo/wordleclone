@@ -3,7 +3,7 @@ import App, { AppContext } from "../App";
 import Key from "./Key";
 
 export default function Keyboard() {
-  const { onEnter, onDeleteLetter, onSelectLetter } = useContext(AppContext);
+  const { onEnter, onDeleteLetter, onSelectLetter, disabledLetters } = useContext(AppContext);
 
 
   const keys1 = ["Q", "W", "E", "R", "T", "Z", "U", "I", "O", "P"];
@@ -31,14 +31,14 @@ export default function Keyboard() {
   return (
     <div className="keyboard" onKeyUp={handleKeyup}>
       <div className="line1 line">
-        {keys1.map((e,i) => <Key keyVal={e} key={i}></Key>)}
+        {keys1.map((e,i) => <Key keyVal={e} key={i} disabled={disabledLetters.includes(e)}></Key>)}
       </div>
       <div className="line2 line">
-        {keys2.map((e,i) => <Key keyVal={e} key={i}></Key>)}
+        {keys2.map((e,i) => <Key keyVal={e} key={i} disabled={disabledLetters.includes(e)}></Key>)}
       </div>
       <div className="line3 line">
         <Key keyVal={"ENTER"} bigKey></Key>
-        {keys3.map((e,i) => <Key keyVal={e} key={i}></Key>)}
+        {keys3.map((e,i) => <Key keyVal={e} key={i} disabled={disabledLetters.includes(e)}></Key>)}
         <Key keyVal={"⌫"} bigKey></Key>
       </div>
     </div>
